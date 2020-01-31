@@ -65,12 +65,13 @@ jobs:
       - run:
           name: Bump version
           command: |
+            git config user.name $CIRCLE_USERNAME
+            git config user.email kontakt@lhwebsolutions.de
             yarn version --patch
             npm publish --access public
       - run:
           name: Push
           command: |
-            git config user.name $CIRCLE_USERNAME
             git add package.json
             git commit -m "[skip ci] Bump version"
             git push origin master
