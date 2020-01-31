@@ -1,0 +1,55 @@
+version: 2.1
+defaults: &defaults
+  working_directory: ~/styledown
+  docker:
+    - image: circleci/node:13.7.0
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/injixo-ui/node_modules
+            - ~/injixo-ui/.cache/yarn
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run prettier
+          command: yarn lint
+      - run:
+          name: Run Jest tests
+          command: yarn jest
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
+      - build:
+          requires:
+            - install
+      - publish:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              only: master
