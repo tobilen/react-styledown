@@ -60,6 +60,10 @@ jobs:
           keys:
             - build-{{ .Revision }}
       - run:
+          name: Authenticate with registry
+          command: |
+            echo "_auth=$NPM_TOKEN" >> ~/styledown/.npmrc
+      - run:
           name: Bump version
           command: |
             git config user.name $CIRCLE_USERNAME
@@ -69,8 +73,7 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - install:
-          context: npm
+      - install
       - test:
           requires:
             - install
