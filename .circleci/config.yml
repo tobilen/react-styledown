@@ -66,12 +66,12 @@ jobs:
           name: Bump version
           command: |
             git config user.name $CIRCLE_USERNAME
+            yarn config set version-git-message "[skip ci] Bump to v%s"
             yarn version --patch
             npm publish --access public
       - run:
           name: Push
           command: |
-            yarn config set version-git-message "[skip ci] Bump to v%s"
             git push origin master
             git push --tags
 workflows:
