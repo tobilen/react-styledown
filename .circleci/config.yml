@@ -35,25 +35,23 @@ jobs:
       - run:
           name: Run Jest tests
           command: yarn jest
-    publish:
-      <<: *defaults
-      steps:
-        - checkout
-        - restore_cache:
-            name: Restore Yarn Package Cache
-            keys:
-              - yarn-packages-{{ checksum "yarn.lock" }}
-        - run:
-            name: Run prettier
-            command: yarn version --patch
-        - run:
-            name: Bump version
-            command: |
-              git config user.name $CIRCLE_USERNAME
-              yarn version --patch
-              yarn publish --non-interactive
-
-
+  publish:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run prettier
+          command: yarn version --patch
+      - run:
+          name: Bump version
+          command: |
+            git config user.name $CIRCLE_USERNAME
+            yarn version --patch
+            yarn publish --non-interactive
 workflows:
   version: 2
   build-deploy:
