@@ -1,9 +1,9 @@
 {
-  "name": "styledown",
+  "name": "react-styledown",
   "version": "0.0.1",
   "description": "Helper to pass a styled-components styling down to its child",
   "main": "dist/index.js",
-  "repository": "https://github.com/tobilen/styledown.git",
+  "repository": "https://github.com/tobilen/react-styledown.git",
   "author": "Tobias Lengsholz<tobias.lengsholz@invision.de>",
   "license": "MIT",
   "dependencies": {

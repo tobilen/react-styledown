@@ -1,6 +1,6 @@
-# Styledown
+# react-styledown
 
-Styledown helps you with styling components through styled components that are not necessarily made for it, such as:
+react-styledown helps you with styling components through styled components that are not necessarily made for it, such as:
 
 - Components that can receive classnames for their inner components
 - Are not react-based
@@ -14,7 +14,7 @@ StyleDown expects a react component in it's `children` prop. You can either pass
 ### Simple Usage
 
 ```tsx
-import { StyleDown as UnstyledStyleDown } from 'styledown';
+import { StyleDown as UnstyledStyleDown } from 'react-styledown';
 
 const StyleDown = styled(UnstyledStyleDown)`
   background-color: red;
@@ -30,7 +30,7 @@ export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
 ### Advanced Usage
 
 ```tsx
-import { StyleDown as UnstyledStyleDown } from 'styledown';
+import { StyleDown as UnstyledStyleDown } from 'react-styledown';
 import SomeComplicatedComponent from 'very-clever-component';
 
 const StyleDown = styled(UnstyledStyleDown)`
