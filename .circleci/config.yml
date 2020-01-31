@@ -11,16 +11,16 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-{{ checksum "yarn.lock" }}
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: yarn-{{ checksum "yarn.lock" }}
           paths:
-            - ~/injixo-ui/node_modules
-            - ~/injixo-ui/.cache/yarn
+            - ~/styledown/node_modules
+            - ~/styledown/.cache/yarn
   test:
     <<: *defaults
     steps:
@@ -28,7 +28,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-{{ checksum "yarn.lock" }}
       - run:
           name: Run prettier
           command: yarn lint
@@ -42,7 +42,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-{{ checksum "yarn.lock" }}
       - run:
           name: Build app
           command: yarn build
