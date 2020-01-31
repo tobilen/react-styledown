@@ -61,8 +61,7 @@ jobs:
             - build-{{ .Revision }}
       - run:
           name: Authenticate with registry
-          command: |
-            echo "_auth=$NPM_TOKEN" >> ~/styledown/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/styledown/.npmrc
       - run:
           name: Bump version
           command: |
