@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strict": true,
+    "jsx": "react",
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "files": ["./src/index.tsx"]
+}
