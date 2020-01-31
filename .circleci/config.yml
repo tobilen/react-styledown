@@ -65,9 +65,16 @@ jobs:
       - run:
           name: Bump version
           command: |
-            git config user.name $CIRCLE_USERNAME
             yarn version --patch
             npm publish --access public
+      - run:
+          name: Push
+          command: |
+            git config user.name $CIRCLE_USERNAME
+            git add package.json
+            git commit -m "[skip ci] Bump version"
+            git push origin master
+            git push --tags
 workflows:
   version: 2
   build-deploy:
