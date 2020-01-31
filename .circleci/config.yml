@@ -80,6 +80,7 @@ workflows:
           requires:
             - test
             - build
+          context: npm
           filters:
             branches:
               only: master
