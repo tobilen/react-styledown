@@ -69,7 +69,8 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - install
+      - install:
+          context: npm
       - test:
           requires:
             - install
