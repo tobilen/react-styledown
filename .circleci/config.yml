@@ -67,7 +67,7 @@ jobs:
           command: |
             git config user.name $CIRCLE_USERNAME
             yarn version --patch
-            npm publish
+            npm publish --access public
 workflows:
   version: 2
   build-deploy:
