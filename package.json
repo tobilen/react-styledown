@@ -34,8 +34,8 @@
   "scripts": {
     "build": "tsc --p . --emitDeclarationOnly && rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest",
-    "pretest": "npm run build"
+    "format": "prettier --write '**/*.{js,ts,tsx,json,md}' --single-quote --trailing-comma all",
+    "test": "prettier --check '**/*.{js,ts,tsx,json,md}' --single-quote --trailing-comma all && jest"
   },
   "files": [
     "dist"
