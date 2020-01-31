@@ -38,6 +38,9 @@
     "format": "prettier --write '**/*.{js,ts,tsx,json,md}' --single-quote --trailing-comma all",
     "test": "lint && jest"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ]
