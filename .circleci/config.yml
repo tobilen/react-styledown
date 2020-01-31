@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Run Jest tests
           command: yarn jest
-  publish:
+  build:
     <<: *defaults
     steps:
       - checkout
@@ -44,8 +44,21 @@ jobs:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
-          name: Run prettier
-          command: yarn version --patch
+          name: Build app
+          command: yarn build
+      - save_cache:
+          name: Save compiled app
+          key: build-{{ .Revision }}
+          paths:
+            - ~/styledown/dist
+  publish:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore compiled package
+          keys:
+            - build-{{ .Revision }}
       - run:
           name: Bump version
           command: |
