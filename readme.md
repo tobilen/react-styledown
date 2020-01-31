@@ -1,3 +1,5 @@
+[![tobilen](https://circleci.com/github/tobilen/react-styledown.svg?style=svg)](https://app.circleci.com/github/tobilen/react-styledown)
+
 # react-styledown
 
 react-styledown helps you with styling components through styled components that are not necessarily made for it, such as:
@@ -14,7 +16,7 @@ StyleDown expects a react component in it's `children` prop. You can either pass
 ### Simple Usage
 
 ```tsx
-import { StyleDown as UnstyledStyleDown } from 'react-styledown';
+import { StyleDown as UnstyledStyleDown } from "react-styledown";
 
 const StyleDown = styled(UnstyledStyleDown)`
   background-color: red;
@@ -30,8 +32,8 @@ export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
 ### Advanced Usage
 
 ```tsx
-import { StyleDown as UnstyledStyleDown } from 'react-styledown';
-import SomeComplicatedComponent from 'very-clever-component';
+import { StyleDown as UnstyledStyleDown } from "react-styledown";
+import SomeComplicatedComponent from "very-clever-component";
 
 const StyleDown = styled(UnstyledStyleDown)`
   background-color: red;
