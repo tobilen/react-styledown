@@ -60,10 +60,6 @@ jobs:
           keys:
             - build-{{ .Revision }}
       - run:
-          name: Authenticate with registry
-          command: |
-            echo "_auth=$NPM_TOKEN" >> ~/styledown/.npmrc
-      - run:
           name: Bump version
           command: |
             git config user.name $CIRCLE_USERNAME
