@@ -1,0 +1,9 @@
+{
+  "name": "sc-classname-extractor",
+  "version": "0.0.1",
+  "description": "sc-classname-extractor",
+  "main": "index.js",
+  "repository": "https://github.com/tobilen/sc-classname-extractor.git",
+  "author": "Tobias Lengsholz<tobias.lengsholz@invision.de>",
+  "license": "MIT"
+}
