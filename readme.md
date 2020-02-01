@@ -49,7 +49,9 @@ export const MyComponent = () => (
 ```
 
 ### Use Component directly
-If for whatever reason you prefer to call styled-components in your own code, you can instead import the base component yourself. This may be useful if you're not using the styled-components version that `react-styledown` depends on, or some other CSS-in-JS solution alltogether. 
+
+If for whatever reason you prefer to call styled-components in your own code, you can instead import the base component yourself. This may be useful if you're not using the styled-components version that `react-styledown` depends on, or some other CSS-in-JS solution alltogether.
+
 ```tsx
 import customStyled from 'my-styled-components-fork';
 import { StyleDown as UnstyledStyleDown } from 'react-styledown';
@@ -69,12 +71,15 @@ export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
 # Editor Support
 
 #### vscode
+
 To enable editor support in vscode, you can install the officially supported plugin: https://github.com/Microsoft/typescript-styled-plugin
 
 It can be configured to support additional tags; Simply add the `styledown` tag as described here: https://github.com/Microsoft/typescript-styled-plugin#tags
 
 #### Webstorm
+
 JetBrain's Webstorm editor ships natively with syntax highlighting support for styled-components. To enable syntax highlighting for react-styledown's keyword `styledown`, simply add it as described in their readme: https://github.com/styled-components/webstorm-styled-components#configuration
 
 #### Vim
+
 The vim plugin currently offers no way of configuring additional keywords. However, you can still fork the plugin and extend the relevant lines ( https://github.com/styled-components/vim-styled-components/blob/main/after/syntax/javascript.vim#L99 )
