@@ -51,6 +51,24 @@ jobs:
           key: build-{{ .Revision }}
           paths:
             - ~/styledown/dist
+  bump-version:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore compiled package
+          keys:
+            - build-{{ .Revision }}
+      - run:
+          name: Bump version
+          command: |
+            git config user.name $CIRCLE_USERNAME
+            yarn version --patch
+      - run:
+          name: Push
+          command: |
+            git push origin master
+            git push --tags
   publish:
     <<: *defaults
     steps:
@@ -63,17 +81,8 @@ jobs:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - run:
-          name: Bump version
-          command: |
-            git config user.name $CIRCLE_USERNAME
-            yarn config set version-git-message "[skip ci] Bump to v%s"
-            yarn version --patch
-            npm publish --access public
-      - run:
-          name: Push
-          command: |
-            git push origin master
-            git push --tags
+          name: Publish to registry
+          command: npm publish --access public
 workflows:
   version: 2
   build-deploy:
@@ -85,11 +94,18 @@ workflows:
       - build:
           requires:
             - install
+      - bump-version:
+          requires:
+            - test
+            - build
+          filters:
+            tags:
+              ignore: /^v.*/
       - publish:
           requires:
             - test
             - build
           context: npm
           filters:
-            branches:
-              only: master
+            tags:
+              only: /^v.*/
