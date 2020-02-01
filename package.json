@@ -1,6 +1,6 @@
 {
   "name": "react-styledown",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "Helper to pass a styled-components styling down to its child",
   "main": "dist/index.js",
   "repository": "https://github.com/tobilen/react-styledown.git",
