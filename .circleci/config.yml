@@ -59,9 +59,12 @@ jobs:
           name: Bump version
           command: |
             git config user.name $CIRCLE_USERNAME
-            if [[ git describe --exact-match =~ ^v[0-9]++.[0-9]++.[0-9]++$ ]]; then
+            TAG="$(git describe --exact-match)"
+            echo "$TAG"
+            if [[ "$TAG" =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
                 echo "Tagged commit, no new version required"
               else
+                echo "No tagged commit, push new version"
                 yarn version --patch
                 git push origin master
                 git push --tags
