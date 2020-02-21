@@ -12,25 +12,6 @@ export const StyleDown: React.FC<Props> = ({
   ...props
 }) => <Component {...props} />;
 
-export const styledown = (strings: TemplateStringsArray, ...args: any) => {
-  const StyleHolder = styled(StyleDown)(strings, ...args);
-
-  return ({ children: Component, ...props }: Props) => {
-    const [styledClassName, setStyledClassName] = React.useState<string>();
-    return (
-      <>
-        <StyleHolder>
-          {({ className }) => {
-            setStyledClassName(className);
-            return null;
-          }}
-        </StyleHolder>
-        {styledClassName && (
-          <Component {...props} className={styledClassName} />
-        )}
-      </>
-    );
-  };
-};
+export const styledown = styled(StyleDown);
 
 export default styledown;

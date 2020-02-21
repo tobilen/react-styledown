@@ -26,16 +26,6 @@ const ComplicatedTargetComponent: React.FC<React.HTMLAttributes<
 
 describe('react-styledown', () => {
   describe('styledown', () => {
-    it('renders the passed component', () => {
-      const StyleDown = styledown`
-        background-color: red;
-      `;
-
-      const { getByTestId } = render(<StyleDown>{TargetComponent}</StyleDown>);
-
-      expect(getByTestId('target-component')).toBeInTheDocument();
-    });
-
     it('passes on the styled-components class', () => {
       const StyleDown = styledown`
         background-color: red;
