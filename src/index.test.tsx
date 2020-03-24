@@ -1,21 +1,21 @@
 import * as React from 'react';
-import 'jest-styled-components';
+import '@invisionag/jest-styled-components';
 import '@testing-library/jest-dom/extend-expect';
 import styled from 'styled-components';
 import { render } from '@testing-library/react';
 import styledown, { StyleDown as UnstyledStyleDown } from '.';
 
-const TargetComponent: React.FC<React.HTMLAttributes<
-  HTMLDivElement
->> = props => (
+const TargetComponent: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
+  props,
+) => (
   <div {...props} data-testid="target-component">
     classname is {props.className}
   </div>
 );
 
-const ComplicatedTargetComponent: React.FC<React.HTMLAttributes<
-  HTMLDivElement
-> & { passedClassName?: string }> = ({ passedClassName, ...props }) => (
+const ComplicatedTargetComponent: React.FC<
+  React.HTMLAttributes<HTMLDivElement> & { passedClassName?: string }
+> = ({ passedClassName, ...props }) => (
   <div {...props} data-testid="target-component">
     <div className={passedClassName} data-testid="inner-target-component">
       <span>classname is {props.className}</span>
