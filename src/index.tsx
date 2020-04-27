@@ -1,32 +1,43 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'styled-components';
+import styled, { CSSObject, InterpolationFunction } from 'styled-components';
 import { generateAlphabeticName, hash } from './hash';
 
-export const useStyles = (input: string) => {
-  const [className, setClassName] = React.useState<string>();
-  React.useEffect(() => {
-    // create styled component with passed styles
-    const StyleContainer = styled.div`
-      ${input}
-    `;
+export function useStyles<T = {}>(
+  props?: React.HTMLAttributes<HTMLDivElement> & T,
+) {
+  return (
+    literal: TemplateStringsArray | CSSObject | InterpolationFunction<any>,
+    ...expressions:
+      | TemplateStringsArray
+      | CSSObject[]
+      | InterpolationFunction<any>[]
+  ) => {
+    const [className, setClassName] = React.useState<string>();
 
-    const className = generateAlphabeticName(hash(input));
+    React.useEffect(() => {
+      // create styled component with passed styles
+      const StyleContainer = styled.div(literal, expressions);
 
-    // create (invisible) portal and render component there to attach styles
-    const orphanContainer = document.createElement('div');
-    ReactDOM.render(
-      <StyleContainer className={className} />,
-      orphanContainer,
-      () => {
-        setClassName(orphanContainer.querySelector(`.${className}`)?.className);
-      },
-    );
+      const className = generateAlphabeticName(hash(literal.toString()));
 
-    return () => {
-      ReactDOM.unmountComponentAtNode(orphanContainer);
-    };
-  }, [input]);
+      // create (invisible) portal and render component there to attach styles
+      const orphanContainer = document.createElement('div');
+      ReactDOM.render(
+        <StyleContainer {...props} className={className} />,
+        orphanContainer,
+        () => {
+          setClassName(
+            orphanContainer.querySelector(`.${className}`)?.className,
+          );
+        },
+      );
 
-  return { className };
-};
+      return () => {
+        ReactDOM.unmountComponentAtNode(orphanContainer);
+      };
+    }, [literal]);
+
+    return { className };
+  };
+}
