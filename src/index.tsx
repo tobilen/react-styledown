@@ -1,22 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-
-function checksum(s: string) {
-  var hash = 0,
-    strlen = s.length,
-    i,
-    c;
-  if (strlen === 0) {
-    return hash.toString();
-  }
-  for (i = 0; i < strlen; i++) {
-    c = s.charCodeAt(i);
-    hash = (hash << 5) - hash + c;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return hash.toString();
-}
+import { generateAlphabeticName, hash } from './hash';
 
 export const useStyles = (input: string) => {
   const [className, setClassName] = React.useState<string>();
@@ -26,17 +11,15 @@ export const useStyles = (input: string) => {
       ${input}
     `;
 
-    const inputChecksum = checksum(input);
+    const className = generateAlphabeticName(hash(input));
 
     // create (invisible) portal and render component there to attach styles
     const orphanContainer = document.createElement('div');
     ReactDOM.render(
-      <StyleContainer id={inputChecksum} />,
+      <StyleContainer className={className} />,
       orphanContainer,
       () => {
-        setClassName(
-          orphanContainer.querySelector(`#${inputChecksum}`)?.className,
-        );
+        setClassName(orphanContainer.querySelector(`.${className}`)?.className);
       },
     );
 

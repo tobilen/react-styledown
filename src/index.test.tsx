@@ -1,7 +1,7 @@
 import * as React from 'react';
 import '@invisionag/jest-styled-components';
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useStyles } from '.';
 
 const TargetComponent: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
@@ -18,7 +18,7 @@ const TargetComponent: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
 
 describe('react-styledown', () => {
   it('attaches styles to the dom', async () => {
-    const { unmount, container, debug } = render(<TargetComponent />);
+    render(<TargetComponent />);
 
     const myComponent = screen.getByText(/classname is.*/);
 
