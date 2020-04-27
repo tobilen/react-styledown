@@ -41,3 +41,5 @@ export function useStyles<T = {}>(
     return { className };
   };
 }
+
+export default useStyles;

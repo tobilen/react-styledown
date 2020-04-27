@@ -37,7 +37,9 @@ const Component = (props: HTMLAttributes<HTMLDivElement>) => {
 import { useStyles } from 'react-styledown';
 import SomeComplicatedComponent from 'very-clever-component';
 
-const Component = (props: { color: string } & HTMLAttributes<HTMLDivElement>) => {
+const Component = (
+  props: { color: string } & HTMLAttributes<HTMLDivElement>,
+) => {
   const { className } = useStyles(props)`
     background-color: red;
     color: ${(props) => props.color};
@@ -50,7 +52,6 @@ const Component = (props: { color: string } & HTMLAttributes<HTMLDivElement>) =>
   );
 };
 ```
-
 
 # Editor Support
 
