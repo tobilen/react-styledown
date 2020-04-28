@@ -19,16 +19,23 @@ export function useStyles<T = {}>(
       // create styled component with passed styles
       const StyleContainer = styled.div(literal, expressions);
 
-      const className = generateAlphabeticName(hash(literal.toString()));
+      const internalClassName = generateAlphabeticName(
+        hash(literal.toString()),
+      );
 
       // create (invisible) portal and render component there to attach styles
       const orphanContainer = document.createElement('div');
       ReactDOM.render(
-        <StyleContainer {...props} className={className} />,
+        <StyleContainer {...props} className={internalClassName} />,
         orphanContainer,
         () => {
+          const generatedClassName = orphanContainer.querySelector(
+            `.${internalClassName}`,
+          )?.className;
           setClassName(
-            orphanContainer.querySelector(`.${className}`)?.className,
+            props?.className
+              ? `${props?.className} ${generatedClassName}`
+              : generatedClassName,
           );
         },
       );

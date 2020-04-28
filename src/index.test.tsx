@@ -7,7 +7,7 @@ import { useStyles } from '.';
 const StaticallyStyledComponent: React.FC<React.HTMLAttributes<
   HTMLDivElement
 >> = (props) => {
-  const { className } = useStyles()`
+  const { className } = useStyles(props)`
     background-color: red
   `;
   return (
@@ -50,5 +50,13 @@ describe('react-styledown', () => {
     expect(myComponent).toHaveStyleRule('background-color: blue');
     rerender(<RuntimeStyledComponent color="green" />);
     expect(myComponent).toHaveStyleRule('background-color: green');
+  });
+
+  it('allows for setting a classname', () => {
+    render(<StaticallyStyledComponent className="my-component" />);
+
+    const myComponent = screen.getByText(/classname is.*/);
+
+    expect(myComponent).toHaveClass('my-component');
   });
 });
