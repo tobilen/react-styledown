@@ -7,65 +7,50 @@ react-styledown helps you with styling components through styled components that
 - Components that can receive classnames for their inner components
 - Are not react-based
 
+It works through a hook based interface that takes your styles and hands you back a generated class name whose styles have already been appended to the DOM.
+
 It does not use any internal interface and should be compatible with all versions of styled components from 3.0.0 upwards.
 
 # Examples
 
-StyleDown expects a react component in it's `children` prop. You can either pass your component directly or via inline function to reassign the `className` prop to where you want it to go.
-
 ### Simple Usage
 
 ```tsx
-import styledown from 'react-styledown';
+import { useStyles } from 'react-styledown';
 
-const StyleDown = styledown`
-  background-color: red;
-`;
+const Component = (props: HTMLAttributes<HTMLDivElement>) => {
+  const { className } = useStyles(props)`
+    background-color: red;
+  `;
 
-const TargetComponent = (props: HTMLAttributes<HTMLDivElement>) => (
-  <div {...props}>Hello World</div>
-);
-
-export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
+  return (
+    <div {...props} className={className}>
+      Hello World
+    </div>
+  );
+};
 ```
 
 ### Advanced Usage
 
 ```tsx
-import styledown from 'react-styledown';
+import { useStyles } from 'react-styledown';
 import SomeComplicatedComponent from 'very-clever-component';
 
-const StyleDown = styledown`
-  background-color: red;
-`;
+const Component = (
+  props: { color: string } & HTMLAttributes<HTMLDivElement>,
+) => {
+  const { className } = useStyles(props)`
+    background-color: red;
+    color: ${(props) => props.color};
+  `;
 
-export const MyComponent = () => (
-  <StyleDown>
-    {({ className }) => (
+  return (
+    <div {...props}>
       <SomeComplicatedComponent innerElementProps={{ className }} />
-    )}
-  </StyleDown>
-);
-```
-
-### Use Component directly
-
-If for whatever reason you prefer to call styled-components in your own code, you can instead import the base component yourself. This may be useful if you're not using the styled-components version that `react-styledown` depends on, or some other CSS-in-JS solution alltogether.
-
-```tsx
-import customStyled from 'my-styled-components-fork';
-import { StyleDown as UnstyledStyleDown } from 'react-styledown';
-import SomeComplicatedComponent from 'very-clever-component';
-
-const StyleDown = customStyled(UnstyledStyleDown)`
-  background-color: red;
-`;
-
-const TargetComponent = (props: HTMLAttributes<HTMLDivElement>) => (
-  <div {...props}>Hello World</div>
-);
-
-export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
+    </div>
+  );
+};
 ```
 
 # Editor Support
@@ -74,11 +59,11 @@ export const MyComponent = () => <StyleDown>{TargetComponent}</StyleDown>;
 
 To enable editor support in vscode, you can install the officially supported plugin: https://github.com/Microsoft/typescript-styled-plugin
 
-It can be configured to support additional tags; Simply add the `styledown` tag as described here: https://github.com/Microsoft/typescript-styled-plugin#tags
+It can be configured to support additional tags; Simply add the `useStyles` tag as described here: https://github.com/Microsoft/typescript-styled-plugin#tags
 
 #### Webstorm
 
-JetBrain's Webstorm editor ships natively with syntax highlighting support for styled-components. To enable syntax highlighting for react-styledown's keyword `styledown`, simply add it as described in their readme: https://github.com/styled-components/webstorm-styled-components#configuration
+JetBrain's Webstorm editor ships natively with syntax highlighting support for styled-components. To enable syntax highlighting for react-styledown's keyword `useStyles`, simply add it as described in their readme: https://github.com/styled-components/webstorm-styled-components#configuration
 
 #### Vim
 

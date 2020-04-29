@@ -1,160 +1,62 @@
 import * as React from 'react';
 import '@invisionag/jest-styled-components';
 import '@testing-library/jest-dom/extend-expect';
-import styled from 'styled-components';
-import { render } from '@testing-library/react';
-import styledown, { StyleDown as UnstyledStyleDown } from '.';
+import { render, screen } from '@testing-library/react';
+import { useStyles } from '.';
 
-const TargetComponent: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
-  props,
-) => (
-  <div {...props} data-testid="target-component">
-    classname is {props.className}
-    {props.children}
-  </div>
-);
-
-const ComplicatedTargetComponent: React.FC<
-  React.HTMLAttributes<HTMLDivElement> & { passedClassName?: string }
-> = ({ passedClassName, ...props }) => (
-  <div {...props} data-testid="target-component">
-    <div className={passedClassName} data-testid="inner-target-component">
-      <span>classname is {props.className}</span>
-      <span>inner classname is {passedClassName}</span>
+const StaticallyStyledComponent: React.FC<React.HTMLAttributes<
+  HTMLDivElement
+>> = (props) => {
+  const { className } = useStyles(props)`
+    background-color: red
+  `;
+  return (
+    <div {...props} data-testid="target-component" className={className}>
+      classname is {className}
+      {props.children}
     </div>
-  </div>
-);
+  );
+};
+
+const RuntimeStyledComponent: React.FC<
+  React.HTMLAttributes<HTMLDivElement> & { color: 'blue' | 'green' }
+> = (props) => {
+  const { className } = useStyles<{ color: 'blue' | 'green' }>(props)`
+    background-color: ${(props) => props.color};
+  `;
+  return (
+    <div {...props} data-testid="target-component" className={className}>
+      classname is {className}
+      {props.children}
+    </div>
+  );
+};
 
 describe('react-styledown', () => {
-  describe('styledown', () => {
-    it('passes on the styled-components class', () => {
-      const StyleDown = styledown`
-        background-color: red;
-      `;
+  it('attaches static styles to the dom', () => {
+    render(<StaticallyStyledComponent />);
 
-      const { getByTestId } = render(<StyleDown>{TargetComponent}</StyleDown>);
+    const myComponent = screen.getByText(/classname is.*/);
 
-      expect(getByTestId('target-component')).toHaveStyleRule(
-        'background-color',
-        'red',
-      );
-    });
-
-    it('makes the classname usable inside the passed component', () => {
-      const StyleDown = styledown`
-        background-color: red;
-      `;
-
-      const { getByText } = render(<StyleDown>{TargetComponent}</StyleDown>);
-
-      expect(getByText(/classname.is..+/)).toBeInTheDocument();
-    });
-
-    it('allows for inline implementations to control classname', () => {
-      const StyleDown = styledown`
-        background-color: red;
-      `;
-
-      const { getByTestId } = render(
-        <StyleDown>
-          {({ className }) => (
-            <ComplicatedTargetComponent passedClassName={className} />
-          )}
-        </StyleDown>,
-      );
-
-      expect(getByTestId('target-component')).not.toHaveStyleRule(
-        'background-color',
-      );
-
-      expect(getByTestId('inner-target-component')).toHaveStyleRule(
-        'background-color',
-        'red',
-      );
-    });
-
-    it('passes props including children to the component passed to "as" prop', () => {
-      const StyleDown = styledown`
-        background-color: red;
-      `;
-
-      const { getByTestId, getByText } = render(
-        <StyleDown as={TargetComponent}>
-          <span>Hello World</span>
-        </StyleDown>,
-      );
-
-      expect(getByTestId('target-component')).toHaveStyleRule(
-        'background-color',
-        'red',
-      );
-      expect(getByText('Hello World')).toBeInTheDocument();
-    });
+    expect(myComponent).toBeInTheDocument();
+    expect(myComponent).toHaveStyleRule('background-color: red');
   });
 
-  describe('StyleDown', () => {
-    it('works when not wrapping the StyleDown component in styled', () => {
-      const { getByText } = render(
-        <UnstyledStyleDown>{TargetComponent}</UnstyledStyleDown>,
-      );
+  it('attaches runtime styles to the dom', () => {
+    const { rerender } = render(<RuntimeStyledComponent color="blue" />);
 
-      expect(getByText('classname is')).toBeInTheDocument();
-    });
+    const myComponent = screen.getByText(/classname is.*/);
 
-    it('passes stuff through to child component', () => {
-      const { getByText } = render(
-        <UnstyledStyleDown className="custom class name">
-          {TargetComponent}
-        </UnstyledStyleDown>,
-      );
+    expect(myComponent).toHaveStyleRule('background-color: blue');
+    rerender(<RuntimeStyledComponent color="green" />);
+    expect(myComponent).toHaveStyleRule('background-color: green');
+  });
 
-      expect(getByText('classname is custom class name')).toBeInTheDocument();
-    });
+  it('allows for setting a classname', () => {
+    render(<StaticallyStyledComponent className="my-component" />);
 
-    it('passes on the styled-components class', () => {
-      const StyleDown = styled(UnstyledStyleDown)`
-        background-color: red;
-      `;
+    const myComponent = screen.getByText(/classname is.*/);
 
-      const { getByTestId } = render(<StyleDown>{TargetComponent}</StyleDown>);
-
-      expect(getByTestId('target-component')).toHaveStyleRule(
-        'background-color',
-        'red',
-      );
-    });
-
-    it('makes the classname usable inside the passed component', () => {
-      const StyleDown = styled(UnstyledStyleDown)`
-        background-color: red;
-      `;
-
-      const { getByText } = render(<StyleDown>{TargetComponent}</StyleDown>);
-
-      expect(getByText(/classname.is..+/)).toBeInTheDocument();
-    });
-
-    it('allows for inline implementations to control classname', () => {
-      const StyleDown = styled(UnstyledStyleDown)`
-        background-color: red;
-      `;
-
-      const { getByTestId } = render(
-        <StyleDown>
-          {({ className }) => (
-            <ComplicatedTargetComponent passedClassName={className} />
-          )}
-        </StyleDown>,
-      );
-
-      expect(getByTestId('target-component')).not.toHaveStyleRule(
-        'background-color',
-      );
-
-      expect(getByTestId('inner-target-component')).toHaveStyleRule(
-        'background-color',
-        'red',
-      );
-    });
+    expect(myComponent).toHaveClass('my-component');
   });
 });

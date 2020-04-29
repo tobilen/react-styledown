@@ -1,19 +1,41 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import ReactDOM from 'react-dom';
+import styled, { CSSObject, InterpolationFunction } from 'styled-components';
 
-export type RenderFunctionProps = React.HTMLAttributes<HTMLDivElement>;
+export function useStyles<T = {}>(
+  props?: React.HTMLAttributes<HTMLDivElement> & T,
+) {
+  return (
+    literal: TemplateStringsArray | CSSObject | InterpolationFunction<any>,
+    ...expressions:
+      | TemplateStringsArray
+      | CSSObject[]
+      | InterpolationFunction<any>[]
+  ) => {
+    const [className, setClassName] = React.useState<string>();
 
-export type Props = RenderFunctionProps & {
-  children: React.ComponentType<RenderFunctionProps>;
-  as?: React.ComponentType<Partial<RenderFunctionProps>>;
-};
+    React.useEffect(() => {
+      // create styled component with passed styles
+      const StyleContainer = styled.div(literal, expressions);
 
-export const StyleDown: React.FC<Props> = ({
-  children: Component,
-  as: As,
-  ...props
-}) => (As ? <As {...props}>{Component}</As> : <Component {...props} />);
+      // create (invisible) portal and render component there to attach styles
+      const orphanContainer = document.createElement('div');
+      ReactDOM.render(<StyleContainer {...props} />, orphanContainer, () => {
+        const generatedClassName = orphanContainer.children[0]?.className;
+        setClassName(
+          props?.className
+            ? `${props?.className} ${generatedClassName}`
+            : generatedClassName,
+        );
+      });
 
-export const styledown = styled(StyleDown);
+      return () => {
+        ReactDOM.unmountComponentAtNode(orphanContainer);
+      };
+    }, [literal]);
 
-export default styledown;
+    return { className };
+  };
+}
+
+export default useStyles;
