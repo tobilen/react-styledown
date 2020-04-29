@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'styled-components';
 import '@invisionag/jest-styled-components';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
@@ -32,6 +33,18 @@ const RuntimeStyledComponent: React.FC<
   );
 };
 
+const ComponentWithInterpolation: React.FC = () => {
+  const someStyles = css`
+    background-color: red;
+  `;
+  const { className } = useStyles()`${someStyles}`;
+  return (
+    <div data-testid="target-component" className={className}>
+      classname is {className}
+    </div>
+  );
+};
+
 describe('react-styledown', () => {
   it('attaches static styles to the dom', () => {
     render(<StaticallyStyledComponent />);
@@ -58,5 +71,13 @@ describe('react-styledown', () => {
     const myComponent = screen.getByText(/classname is.*/);
 
     expect(myComponent).toHaveClass('my-component');
+  });
+
+  it('takes interpolation results as expressions', () => {
+    render(<ComponentWithInterpolation />);
+
+    const myComponent = screen.getByText(/classname is.*/);
+
+    expect(myComponent).toHaveStyleRule('background-color: red');
   });
 });
