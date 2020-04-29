@@ -8,5 +8,6 @@
     "declaration": true,
     "outDir": "dist"
   },
-  "files": ["./src/index.tsx"]
+  "files": ["./src/index.tsx", "./src/index.test.tsx"],
+  "typeRoots": ["./node_modules/@types"]
 }
