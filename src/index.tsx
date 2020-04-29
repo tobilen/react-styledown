@@ -1,16 +1,17 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { CSSObject, InterpolationFunction } from 'styled-components';
+import styled, {
+  CSSObject,
+  InterpolationFunction,
+  Interpolation,
+} from 'styled-components';
 
 export function useStyles<T = {}>(
   props?: React.HTMLAttributes<HTMLDivElement> & T,
 ) {
   return (
     literal: TemplateStringsArray | CSSObject | InterpolationFunction<any>,
-    ...expressions:
-      | TemplateStringsArray
-      | CSSObject[]
-      | InterpolationFunction<any>[]
+    ...expressions: TemplateStringsArray | CSSObject[] | Interpolation<any>[]
   ) => {
     const [className, setClassName] = React.useState<string>();
 
