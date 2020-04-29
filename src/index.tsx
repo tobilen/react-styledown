@@ -16,7 +16,7 @@ export function useStyles<T = {}>(
 
     React.useEffect(() => {
       // create styled component with passed styles
-      const StyleContainer = styled.div(literal, expressions);
+      const StyleContainer = styled.div(literal, ...expressions);
 
       // create (invisible) portal and render component there to attach styles
       const orphanContainer = document.createElement('div');
