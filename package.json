@@ -4,7 +4,7 @@
   "description": "Helper to pass a styled-components styling down to its child",
   "main": "dist/index.js",
   "repository": "https://github.com/tobilen/react-styledown.git",
-  "author": "Tobias Lengsholz<tobias.lengsholz@invision.de>",
+  "author": "[Florian Becker<florian.becker@invision.de>, Tobias Lengsholz<tobias.lengsholz@invision.de>]",
   "license": "MIT",
   "dependencies": {
     "@types/react": "^16.9.19",
